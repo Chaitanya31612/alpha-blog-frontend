@@ -1,7 +1,7 @@
 import { useEffect } from "react";
 import { useCookies } from "react-cookie";
 import { Route, Routes } from "react-router-dom";
-import { setAuthToken } from "./apis";
+import { loadUser, setAuthToken } from "./apis";
 import Header from "./components/Header";
 import { useAuth } from "./contexts/AuthContext";
 import { Articles, Landing, Login, SignUp } from "./pages";
@@ -20,17 +20,22 @@ const App = () => {
   console.log("loggedIn: ", loggedIn);
 
   useEffect(() => {
-    console.log("Cookies: ", cookies, localStorage.getItem("authToken"));
-    if (!loggedIn && !currentUser && !token) {
-      const { authToken, user } = cookies;
-      if (authToken) {
-        setAuthToken(authToken);
-        setLoggedIn(true);
-        setCurrentUser(user);
-        setToken(authToken);
-      }
+    const { authToken } = cookies;
+    if (authToken) {
+      setAuthToken(authToken);
+      setLoggedIn(true);
+
+      const getUser = async () => {
+        try {
+          const { user } = await loadUser();
+          setCurrentUser(user);
+        } catch (error) {
+          console.log("error: ", error);
+        }
+      };
+      getUser();
     }
-  }, [loggedIn, currentUser, token, cookies]);
+  }, [cookies]);
 
   return (
     <>

@@ -9,22 +9,31 @@ const SignUpForm = () => {
   const navigate = useNavigate();
   const { currentUser, setCurrentUser, loggedIn, setLoggedIn } = useAuth();
   const [, setCookie] = useCookies(["authToken"]);
-  const { isLoading, isError, error, data, mutateAsync } = useMutation(
-    ["signup"],
-    signUpUser
-  );
+  const { mutateAsync } = useMutation(["signup"], signUpUser);
 
   return (
     <Formik
       initialValues={{ email: "", password: "", username: "" }}
       validate={(values) => {
         const errors = {};
+        if(!values.username) {
+          errors.username = "Required";
+        } else if (values.username.length < 3) {
+          errors.username = "Username must be at least 3 characters long";
+        }
+
         if (!values.email) {
           errors.email = "Required";
         } else if (
           !/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i.test(values.email)
         ) {
           errors.email = "Invalid email address";
+        }
+
+        if (!values.password) {
+          errors.password = "Required";
+        } else if (values.password.length < 5) {
+          errors.password = "Password must be at least 5 characters long";
         }
         return errors;
       }}
@@ -43,10 +52,8 @@ const SignUpForm = () => {
         });
         console.log("res is: ", token, user);
         setLoggedIn(true);
-        setCurrentUser(user);
+        // setCurrentUser(user);
         setCookie("authToken", token, { path: "/" });
-        localStorage.setItem("authToken", token);
-        setCookie("user", user, { path: "/" });
         navigate("/articles");
       }}
     >
@@ -66,7 +73,7 @@ const SignUpForm = () => {
               placeholder="username_123"
               required
             />
-            <ErrorMessage name="username" component="div" />
+            <ErrorMessage className="text-danger small fst-italic px-0" name="username" component="div" />
           </div>
           <div className="form-group row mb-2">
             <label
@@ -82,7 +89,7 @@ const SignUpForm = () => {
               placeholder="email@example.com"
               required
             />
-            <ErrorMessage name="email" component="div" />
+            <ErrorMessage className="text-danger small fst-italic px-0" name="email" component="div" />
           </div>
           <div className="form-group row mb-2">
             <label
@@ -98,7 +105,7 @@ const SignUpForm = () => {
               placeholder="Enter your password"
               required
             />
-            <ErrorMessage name="password" component="div" />
+            <ErrorMessage className="text-danger small fst-italic px-0" name="password" component="div" />
           </div>
           <div className="form-group row">
             <div className="form-group row">
