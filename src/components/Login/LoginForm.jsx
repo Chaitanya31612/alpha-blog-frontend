@@ -1,71 +1,96 @@
-import { useState } from "react";
-import { Link } from "react-router-dom";
+import { useMutation } from "@tanstack/react-query";
+import { Link, useNavigate } from "react-router-dom";
+import { useAuth } from "../../contexts/AuthContext";
+import { Formik, Form, Field, ErrorMessage } from "formik";
+import { useCookies } from "react-cookie";
+import { loginUser } from "../../apis";
 
 const LoginForm = () => {
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-
-  const handleLogin = (e) => {
-    e.preventDefault();
-    console.log("Login form submitted");
-    console.log("Email: ", email);
-  };
+  const navigate = useNavigate();
+  const { currentUser, setCurrentUser, loggedIn, setLoggedIn } = useAuth();
+  const [, setCookie] = useCookies(["authToken"]);
+  const { isLoading, isError, error, data, mutateAsync } = useMutation(
+    ["login"],
+    loginUser
+  );
 
   return (
-    <form className="px-5" onSubmit={handleLogin}>
-      <div className="form-group row mb-2">
-        <label
-          htmlFor="email"
-          className="col-form-label fw-semibold text-muted ps-0"
-        >
-          Username or Email
-        </label>
-        <input
-          type="text"
-          name="email"
-          id="email"
-          className="form-control"
-          placeholder="Enter username or email"
-          required
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
-        />
-      </div>
-      <div className="form-group row mb-2">
-        <label
-          htmlFor="password"
-          className="col-form-label fw-semibold text-muted ps-0"
-        >
-          Password
-        </label>
-        <input
-          type="password"
-          name="password"
-          id="password"
-          className="form-control"
-          placeholder="Enter your password"
-          required
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
-        />
-      </div>
-      <div className="form-group row">
-        <button
-          type="submit"
-          className="btn btn-primary mt-4"
-          style={{ width: "100%" }}
-        >
-          Login
-        </button>
-      </div>
-      <div className="form-group row mt-3">
-        <small className="text-muted ps-0">
-          {/* eslint-disable-next-line react/no-unescaped-entities */}
-          <span>Don't have an account? </span>
-          <Link to="/signup">Sign Up</Link>
-        </small>
-      </div>
-    </form>
+    <Formik
+      initialValues={{ email: "", password: "" }}
+      onSubmit={async ({ email, password }, { setSubmitting }) => {
+        setSubmitting(false);
+        console.log("Email: ", email);
+        console.log("password: ", password);
+        console.log("currentUser: ", currentUser);
+        console.log("loggedIn: ", loggedIn);
+
+        const { token, user } = await mutateAsync({
+          email,
+          password,
+        });
+        console.log("res is: ", token, user);
+        setLoggedIn(true);
+        setCurrentUser(user);
+        setCookie("authToken", token, { path: "/" });
+        localStorage.setItem("authToken", token);
+        setCookie("user", user, { path: "/" });
+        navigate("/articles");
+      }}
+    >
+      {({ isSubmitting }) => (
+        <Form className="px-5">
+          <div className="form-group row mb-2">
+            <label
+              htmlFor="email"
+              className="col-form-label fw-semibold text-muted ps-0"
+            >
+              Username or Email
+            </label>
+            <Field
+              type="text"
+              name="email"
+              className="form-control"
+              placeholder="Enter username or email"
+              required
+            />
+            <ErrorMessage name="email" component="div" />
+          </div>
+          <div className="form-group row mb-2">
+            <label
+              htmlFor="password"
+              className="col-form-label fw-semibold text-muted ps-0"
+            >
+              Password
+            </label>
+            <Field
+              type="password"
+              name="password"
+              className="form-control"
+              placeholder="Enter your password"
+              required
+            />
+            <ErrorMessage name="password" component="div" />
+          </div>
+          <div className="form-group row">
+            <button
+              type="submit"
+              className="btn btn-primary mt-4"
+              style={{ width: "100%" }}
+              disabled={isSubmitting}
+            >
+              Login
+            </button>
+          </div>
+          <div className="form-group row mt-3">
+            <small className="text-muted ps-0">
+              {/* eslint-disable-next-line react/no-unescaped-entities */}
+              <span>Don't have an account? </span>
+              <Link to="/signup">Sign Up</Link>
+            </small>
+          </div>
+        </Form>
+      )}
+    </Formik>
   );
 };
 

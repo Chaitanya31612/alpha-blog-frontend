@@ -2,16 +2,21 @@ import { useMutation } from "@tanstack/react-query";
 import { Link, useNavigate } from "react-router-dom";
 import { useAuth } from "../../contexts/AuthContext";
 import { Formik, Form, Field, ErrorMessage } from "formik";
+import { useCookies } from "react-cookie";
+import { signUpUser } from "../../apis";
 
 const SignUpForm = () => {
   const navigate = useNavigate();
   const { currentUser, setCurrentUser, loggedIn, setLoggedIn } = useAuth();
-
-  // const { isLoading, isError, error, data, mutateAsync } = useMutation(['signup'], );
+  const [, setCookie] = useCookies(["authToken"]);
+  const { isLoading, isError, error, data, mutateAsync } = useMutation(
+    ["signup"],
+    signUpUser
+  );
 
   return (
     <Formik
-      initialValues={{ email: "", password: "" }}
+      initialValues={{ email: "", password: "", username: "" }}
       validate={(values) => {
         const errors = {};
         if (!values.email) {
@@ -31,12 +36,17 @@ const SignUpForm = () => {
         console.log("currentUser: ", currentUser);
         console.log("loggedIn: ", loggedIn);
 
-        // await mutateAsync({
-        //   email,
-        //   username,
-        //   password,
-        // });
+        const { token, user } = await mutateAsync({
+          email,
+          username,
+          password,
+        });
+        console.log("res is: ", token, user);
         setLoggedIn(true);
+        setCurrentUser(user);
+        setCookie("authToken", token, { path: "/" });
+        localStorage.setItem("authToken", token);
+        setCookie("user", user, { path: "/" });
         navigate("/articles");
       }}
     >
@@ -98,7 +108,7 @@ const SignUpForm = () => {
                 style={{ width: "100%" }}
                 disabled={isSubmitting}
               >
-                Login
+                Sign up
               </button>
             </div>
             <div className="form-group row mt-3">

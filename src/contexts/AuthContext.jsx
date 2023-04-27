@@ -11,6 +11,7 @@ export function useAuth() {
 export function AuthProvider({ children }) {
   const [currentUser, setCurrentUser] = useState();
   const [loggedIn, setLoggedIn] = useState(false);
+  const [token, setToken] = useState();
   const [loading, setLoading] = useState(false);
 
   const value = {
@@ -20,6 +21,8 @@ export function AuthProvider({ children }) {
     setLoggedIn,
     userLoading: loading,
     setUserLoading: setLoading,
+    token,
+    setToken,
   };
 
   return (

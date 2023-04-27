@@ -1,11 +1,11 @@
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
+import { useAuth } from "../../contexts/AuthContext";
 import NavLinks from "./NavLinks";
 import Search from "./Search";
 
 const Header = () => {
-  const [loggedIn, setLoggedIn] = useState(false);
-  const [currentUser, setCurrentUser] = useState();
+  const { currentUser, setCurrentUser, loggedIn, setLoggedIn } = useAuth();
 
   return (
     <nav className="navbar navbar-expand-lg bg-body-tertiary">
