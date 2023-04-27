@@ -1,6 +1,6 @@
 import { useEffect } from "react";
 import { useCookies } from "react-cookie";
-import { Route, Routes } from "react-router-dom";
+import { Route, Routes, useNavigate } from "react-router-dom";
 import { loadUser, setAuthToken } from "./apis";
 import Header from "./components/Header";
 import { useAuth } from "./contexts/AuthContext";
@@ -8,14 +8,8 @@ import { Articles, Landing, Login, SignUp } from "./pages";
 import PrivateRoutes from "./routes/PrivateRoutes";
 
 const App = () => {
-  const {
-    currentUser,
-    setCurrentUser,
-    loggedIn,
-    setLoggedIn,
-    token,
-    setToken,
-  } = useAuth();
+  const navigate = useNavigate();
+  const { setCurrentUser, loggedIn, setLoggedIn } = useAuth();
   const [cookies] = useCookies(["authToken"]);
   console.log("loggedIn: ", loggedIn);
 
@@ -41,9 +35,15 @@ const App = () => {
     <>
       <Header />
       <Routes>
-        <Route path="/" element={<Landing />} />
-        <Route path="/signup" element={<SignUp />} />
-        <Route path="/login" element={<Login />} />
+        {loggedIn ? (
+          navigate("/articles", { replace: true })
+        ) : (
+          <>
+            <Route path="/" element={<Landing />} />
+            <Route path="/signup" element={<SignUp />} />
+            <Route path="/login" element={<Login />} />
+          </>
+        )}
         <Route
           element={<PrivateRoutes loggedIn={loggedIn || cookies.authToken} />}
         >

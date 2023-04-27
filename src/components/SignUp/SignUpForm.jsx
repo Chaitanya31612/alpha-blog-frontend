@@ -7,7 +7,7 @@ import { signUpUser } from "../../apis";
 
 const SignUpForm = () => {
   const navigate = useNavigate();
-  const { currentUser, setCurrentUser, loggedIn, setLoggedIn } = useAuth();
+  const { currentUser, loggedIn, setLoggedIn } = useAuth();
   const [, setCookie] = useCookies(["authToken"]);
   const { mutateAsync } = useMutation(["signup"], signUpUser);
 
@@ -52,7 +52,6 @@ const SignUpForm = () => {
         });
         console.log("res is: ", token, user);
         setLoggedIn(true);
-        // setCurrentUser(user);
         setCookie("authToken", token, { path: "/" });
         navigate("/articles");
       }}

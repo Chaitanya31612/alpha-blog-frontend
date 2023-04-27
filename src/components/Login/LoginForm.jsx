@@ -3,28 +3,16 @@ import { Link, useNavigate } from "react-router-dom";
 import { useAuth } from "../../contexts/AuthContext";
 import { Formik, Form, Field, ErrorMessage } from "formik";
 import { useCookies } from "react-cookie";
-import { baseURL, loginUser } from "../../apis";
+import { loginUser } from "../../apis";
 
 const LoginForm = () => {
   const navigate = useNavigate();
-  const { currentUser, setCurrentUser, loggedIn, setLoggedIn } = useAuth();
+  const { currentUser, loggedIn, setLoggedIn } = useAuth();
   const [, setCookie] = useCookies(["authToken"]);
-  const { isError, isLoading, data, error, mutateAsync } = useMutation(
+  const { mutateAsync } = useMutation(
     ["login"],
     loginUser
   );
-
-  if (isLoading) {
-    console.log("Loading user", isLoading);
-  }
-
-  if (isError) {
-    console.log("Error: ", isError, error);
-  }
-
-  if (data) {
-    console.log("Data: ", data);
-  }
 
   return (
     <Formik
