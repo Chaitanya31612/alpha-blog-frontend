@@ -1,6 +1,14 @@
+import { Navigate } from "react-router-dom";
 import SignUpForm from "../../components/SignUp/SignUpForm";
+import { useAuth } from "../../contexts/AuthContext";
 
 const SignUp = () => {
+  const { loggedIn } = useAuth();
+
+  if (loggedIn) {
+    return <Navigate replace to="/articles" />;
+  }
+
   return (
     <div
       className="container py-5 border my-5 rounded"

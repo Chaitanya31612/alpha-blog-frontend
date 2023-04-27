@@ -9,10 +9,7 @@ const LoginForm = () => {
   const navigate = useNavigate();
   const { currentUser, loggedIn, setLoggedIn } = useAuth();
   const [, setCookie] = useCookies(["authToken"]);
-  const { mutateAsync } = useMutation(
-    ["login"],
-    loginUser
-  );
+  const { mutateAsync } = useMutation(["login"], loginUser);
 
   return (
     <Formik
@@ -32,7 +29,7 @@ const LoginForm = () => {
         setLoggedIn(true);
         // setCurrentUser(user);
         setCookie("authToken", token, { path: "/" });
-        navigate("/articles");
+        navigate("/articles", { replace: true });
       }}
     >
       {({ isSubmitting }) => (

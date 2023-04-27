@@ -1,8 +1,15 @@
-import { Link } from "react-router-dom";
+import { Link, Navigate } from "react-router-dom";
 import Footer from "../../components/Common/Footer";
+import { useAuth } from "../../contexts/AuthContext";
 import { landingGridData } from "../../data/landingGridData";
 
 const Landing = () => {
+  const { loggedIn } = useAuth();
+
+  if (loggedIn) {
+    return <Navigate replace to="/articles" />;
+  }
+
   return (
     <main role="main">
       <div className="p-5 pb-4 mb-4 bg-light" id="home-section">

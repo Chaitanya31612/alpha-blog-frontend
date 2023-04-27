@@ -1,7 +1,16 @@
+import { useCookies } from "react-cookie";
+import Gravatar from "react-gravatar";
 import { Link } from "react-router-dom";
 import { WriteIcon, AdminIcon } from "../../assets/images";
 
 const LoggedInLinks = ({ currentUser }) => {
+  const [, , removeCookie] = useCookies(["authToken"]);
+
+  const handleLogout = () => {
+    removeCookie("authToken");
+    window.location.href = "/";
+  };
+
   return (
     <>
       <li className="nav-item">
@@ -62,6 +71,11 @@ const LoggedInLinks = ({ currentUser }) => {
           data-bs-toggle="dropdown"
           aria-expanded="false"
         >
+          <Gravatar
+            email={currentUser?.email}
+            size={25}
+            className="rounded-circle border me-1"
+          />
           {currentUser?.username || "Chaitanya"}
           {currentUser?.admin && (
             <span className="ms-1">
@@ -84,13 +98,13 @@ const LoggedInLinks = ({ currentUser }) => {
             </Link>
           </li>
           <li>
-            <Link
-              to={`logout`}
+            <button
+              onClick={handleLogout}
               className="dropdown-item"
               style={{ color: "red" }}
             >
               Logout
-            </Link>
+            </button>
           </li>
         </ul>
       </li>

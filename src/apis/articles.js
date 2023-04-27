@@ -1,9 +1,14 @@
 import axios from "axios";
+import { baseURL } from ".";
 
 export const loadArticles = async () => {
   try {
-    const response = await axios.get("http://localhost:3000/articles");
-    return response.data;
+    if (axios.defaults.headers.common["Authorization"]) {
+      const response = await axios.get(`${baseURL}/articles`);
+      return response.data;
+    } else {
+      throw Error("Unauthorized");
+    }
   } catch (err) {
     throw Error(err.message);
   }
