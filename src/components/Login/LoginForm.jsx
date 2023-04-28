@@ -28,7 +28,7 @@ const LoginForm = () => {
         console.log("res is: ", token, user);
         setLoggedIn(true);
         // setCurrentUser(user);
-        setCookie("authToken", token, { path: "/" });
+        setCookie("authToken", token, { path: "/", maxAge: 5000 });
         navigate("/articles", { replace: true });
       }}
     >

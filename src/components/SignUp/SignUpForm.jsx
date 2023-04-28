@@ -16,7 +16,7 @@ const SignUpForm = () => {
       initialValues={{ email: "", password: "", username: "" }}
       validate={(values) => {
         const errors = {};
-        if(!values.username) {
+        if (!values.username) {
           errors.username = "Required";
         } else if (values.username.length < 3) {
           errors.username = "Username must be at least 3 characters long";
@@ -52,7 +52,7 @@ const SignUpForm = () => {
         });
         console.log("res is: ", token, user);
         setLoggedIn(true);
-        setCookie("authToken", token, { path: "/" });
+        setCookie("authToken", token, { path: "/", maxAge: 5000 });
         navigate("/articles");
       }}
     >
@@ -72,7 +72,11 @@ const SignUpForm = () => {
               placeholder="username_123"
               required
             />
-            <ErrorMessage className="text-danger small fst-italic px-0" name="username" component="div" />
+            <ErrorMessage
+              className="text-danger small fst-italic px-0"
+              name="username"
+              component="div"
+            />
           </div>
           <div className="form-group row mb-2">
             <label
@@ -88,7 +92,11 @@ const SignUpForm = () => {
               placeholder="email@example.com"
               required
             />
-            <ErrorMessage className="text-danger small fst-italic px-0" name="email" component="div" />
+            <ErrorMessage
+              className="text-danger small fst-italic px-0"
+              name="email"
+              component="div"
+            />
           </div>
           <div className="form-group row mb-2">
             <label
@@ -104,7 +112,11 @@ const SignUpForm = () => {
               placeholder="Enter your password"
               required
             />
-            <ErrorMessage className="text-danger small fst-italic px-0" name="password" component="div" />
+            <ErrorMessage
+              className="text-danger small fst-italic px-0"
+              name="password"
+              component="div"
+            />
           </div>
           <div className="form-group row">
             <div className="form-group row">
