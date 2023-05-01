@@ -1,6 +1,7 @@
 import Gravatar from "react-gravatar";
 import { Link } from "react-router-dom";
 import { useAuth } from "../../contexts/AuthContext";
+import moment from "moment";
 
 const UsersListItem = ({ user }) => {
   const { currentUser } = useAuth();
@@ -53,7 +54,7 @@ const UsersListItem = ({ user }) => {
             </div>
             <div className="text-muted mb-3">
               <small>
-                <i>Joined {user.createdAt} ago</i>
+                <i>Joined {moment(user.created_at).fromNow()}</i>
               </small>
             </div>
             <div className="d-flex align-items-center justify-content-center gap-3 my-3">

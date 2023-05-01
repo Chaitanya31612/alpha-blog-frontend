@@ -1,10 +1,10 @@
 import axios from "axios";
 import { baseURL } from ".";
 
-export const loadUsersList = async () => {
+export const loadCategoriesList = async () => {
   try {
     if (axios.defaults.headers.common["Authorization"]) {
-      const response = await axios.get(`${baseURL}/users`);
+      const response = await axios.get(`${baseURL}/categories`);
       return response.data;
     } else {
       throw Error("Unauthorized");
@@ -14,10 +14,10 @@ export const loadUsersList = async () => {
   }
 };
 
-export const getTopUsers = async () => {
+export const getTopCategories = async () => {
   try {
     if (axios.defaults.headers.common["Authorization"]) {
-      const response = await axios.get(`${baseURL}/users/top`);
+      const response = await axios.get(`${baseURL}/categories/top`);
       return response.data;
     } else {
       throw Error("Unauthorized");

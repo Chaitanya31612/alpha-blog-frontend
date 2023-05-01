@@ -12,3 +12,5 @@ export const baseURL = import.meta.env.VITE_BASE_URL;
 
 export * from "./articles";
 export * from "./auth";
+export * from "./categories";
+export * from "./users";

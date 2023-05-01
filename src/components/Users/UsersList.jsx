@@ -16,7 +16,6 @@ const UsersList = () => {
       console.log("Success: ", data);
     },
   });
-  console.log(users);
 
   return (
     <div className="container">

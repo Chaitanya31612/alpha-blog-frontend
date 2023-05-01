@@ -13,3 +13,16 @@ export const loadArticles = async () => {
     throw Error(err.message);
   }
 };
+
+export const getFeaturedArticles = async () => {
+  try {
+    if (axios.defaults.headers.common["Authorization"]) {
+      const response = await axios.get(`${baseURL}/articles/featured`);
+      return response.data;
+    } else {
+      throw Error("Unauthorized");
+    }
+  } catch (err) {
+    throw Error(err.message);
+  }
+};

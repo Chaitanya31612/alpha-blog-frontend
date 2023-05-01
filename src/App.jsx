@@ -8,7 +8,8 @@ import PrivateRoutes from "./routes/PrivateRoutes";
 
 import { Landing, Login, SignUp } from "./pages";
 import { UsersPage } from "./pages/Users";
-import { ArticleList } from "./pages/Articles";
+import { ArticlePage } from "./pages/Articles";
+import { CategoriesPage } from "./pages/Categories";
 
 const App = () => {
   const navigate = useNavigate();
@@ -43,11 +44,15 @@ const App = () => {
         <Route
           element={<PrivateRoutes loggedIn={loggedIn || cookies.authToken} />}
         >
-          <Route path="/articles" element={<ArticleList />} />
-
           {/* ================= USERS ===================== */}
           <Route path="/users" element={<UsersPage />} />
           {/* <Route path="/users/:id" element={<User />} /> */}
+
+          {/* ================== ARTICLES ================== */}
+          <Route path="/articles" element={<ArticlePage />} />
+
+          {/* ================== CATEGORIES ================ */}
+          <Route path="/categories" element={<CategoriesPage />} />
         </Route>
       </Routes>
     </>
