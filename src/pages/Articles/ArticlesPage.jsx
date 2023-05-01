@@ -1,6 +1,6 @@
 import { useQuery } from "@tanstack/react-query";
 import { useState } from "react";
-import { loadArticles } from "../../apis";
+import { getFeaturedArticles, loadArticles } from "../../apis";
 import { ArticlesList } from "../../components/Articles";
 import { Tabs } from "../../components/Common";
 import {
@@ -8,9 +8,21 @@ import {
   TopFeaturedArticles,
   TopUsers,
 } from "../../components/Sidebar";
-import { useAuth } from "../../contexts/AuthContext";
 
 const ArticlesPage = () => {
+  const [activeTab, setActiveTab] = useState(0);
+
+  const articleTabs = [
+    {
+      name: "Your Feed",
+      path: "/articles",
+    },
+    {
+      name: "Featured",
+      path: "/articles/featured",
+    },
+  ];
+
   const {
     isError,
     isLoading,
@@ -24,20 +36,16 @@ const ArticlesPage = () => {
       console.log("Success: ", data);
     },
   });
-  const { currentUser } = useAuth();
 
-  const [activeTab, setActiveTab] = useState(0);
-
-  const articleTabs = [
+  const { isLoading: featuredLoading, data: featuredArticles } = useQuery(
+    ["featuredArticles"],
+    getFeaturedArticles,
     {
-      name: "Your Feed",
-      path: "/articles",
-    },
-    {
-      name: "Featured",
-      path: "/articles/featured",
-    },
-  ];
+      onSuccess: (data) => {
+        console.log("featured: ", data);
+      },
+    }
+  );
 
   return (
     <div className="section-profile">
@@ -53,10 +61,20 @@ const ArticlesPage = () => {
 
           {isLoading ? (
             <div>Loading...</div>
-          ) : articles && articles.length > 0 ? (
-            <ArticlesList articles={articles} />
+          ) : activeTab === 0 ? (
+            articles && articles.length > 0 ? (
+              <ArticlesList articles={articles} />
+            ) : (
+              <p className="text-center">No Articles</p>
+            )
+          ) : activeTab === 1 ? (
+            articles && articles.length > 0 ? (
+              <ArticlesList articles={featuredArticles} />
+            ) : (
+              <p className="text-center">No Articles</p>
+            )
           ) : (
-            <p className="text-center">No Articles</p>
+            <p>No results</p>
           )}
         </div>
       </div>
@@ -67,7 +85,10 @@ const ArticlesPage = () => {
         className="d-sm-none d-lg-block"
       >
         <div className="sticky-top" style={{ zIndex: 100 }}>
-          <TopFeaturedArticles />
+          <TopFeaturedArticles
+            isLoading={featuredLoading}
+            featuredArticles={featuredArticles}
+          />
 
           <TopCategories />
 
