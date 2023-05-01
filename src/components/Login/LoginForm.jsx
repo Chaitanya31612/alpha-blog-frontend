@@ -29,6 +29,7 @@ const LoginForm = () => {
         setLoggedIn(true);
         // setCurrentUser(user);
         setCookie("authToken", token, { path: "/", maxAge: 5000 });
+        localStorage.setItem("authToken", token);
         navigate("/articles", { replace: true });
       }}
     >
