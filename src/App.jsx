@@ -9,7 +9,7 @@ import PrivateRoutes from "./routes/PrivateRoutes";
 import { Landing, Login, SignUp } from "./pages";
 import { UsersPage } from "./pages/Users";
 import { ArticlePage } from "./pages/Articles";
-import { CategoriesPage } from "./pages/Categories";
+import { CategoriesPage, CategoryPage } from "./pages/Categories";
 
 const App = () => {
   const navigate = useNavigate();
@@ -53,6 +53,7 @@ const App = () => {
 
           {/* ================== CATEGORIES ================ */}
           <Route path="/categories" element={<CategoriesPage />} />
+          <Route path="/categories/:id" element={<CategoryPage />} />
         </Route>
       </Routes>
     </>

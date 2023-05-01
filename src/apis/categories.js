@@ -26,3 +26,16 @@ export const getTopCategories = async () => {
     throw Error(err.message);
   }
 };
+
+export const getCategory = async (id) => {
+  try {
+    if (axios.defaults.headers.common["Authorization"]) {
+      const response = await axios.get(`${baseURL}/categories/${id}`);
+      return response.data;
+    } else {
+      throw Error("Unauthorized");
+    }
+  } catch (err) {
+    throw Error(err.message);
+  }
+};
