@@ -15,10 +15,9 @@ const App = () => {
   const navigate = useNavigate();
   const { setCurrentUser, loggedIn, setLoggedIn } = useAuth();
   const [cookies] = useCookies(["authToken"]);
-  const authToken = localStorage.getItem("authToken");
 
   useEffect(() => {
-    // const { authToken } = cookies;
+    const { authToken } = cookies;
     if (authToken) {
       setAuthToken(authToken);
       setLoggedIn(true);
@@ -33,7 +32,7 @@ const App = () => {
       };
       getUser();
     }
-  }, [authToken]);
+  }, [cookies]);
 
   return (
     <>
@@ -42,7 +41,9 @@ const App = () => {
         <Route path="/" element={<Landing />} />
         <Route path="/signup" element={<SignUp />} />
         <Route path="/login" element={<Login />} />
-        <Route element={<PrivateRoutes loggedIn={loggedIn || authToken} />}>
+        <Route
+          element={<PrivateRoutes loggedIn={loggedIn || cookies.authToken} />}
+        >
           {/* ================= USERS ===================== */}
           <Route path="/users" element={<UsersPage />} />
           <Route path="/users/:id" element={<UserPage />} />

@@ -48,6 +48,7 @@ const CategoryPage = () => {
         className="d-sm-none d-lg-block"
       >
         <div className="sticky-top" style={{ zIndex: 100 }}>
+          <br />
           <CategoriesInfo
             isLoading={isLoading}
             articlesCount={articles?.length}

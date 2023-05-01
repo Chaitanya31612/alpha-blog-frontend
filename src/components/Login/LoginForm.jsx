@@ -28,8 +28,11 @@ const LoginForm = () => {
         console.log("res is: ", token, user);
         setLoggedIn(true);
         // setCurrentUser(user);
-        setCookie("authToken", token, { path: "/", maxAge: 5000 });
-        localStorage.setItem("authToken", token);
+        setCookie("authToken", token, {
+          path: "/",
+          maxAge: 10000,
+          sameSite: "lax",
+        });
         navigate("/articles", { replace: true });
       }}
     >

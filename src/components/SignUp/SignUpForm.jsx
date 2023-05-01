@@ -52,8 +52,11 @@ const SignUpForm = () => {
         });
         console.log("res is: ", token, user);
         setLoggedIn(true);
-        setCookie("authToken", token, { path: "/", maxAge: 5000 });
-        localStorage.setItem("authToken", token);
+        setCookie("authToken", token, {
+          path: "/",
+          maxAge: 10000,
+          sameSite: "lax",
+        });
         navigate("/articles");
       }}
     >

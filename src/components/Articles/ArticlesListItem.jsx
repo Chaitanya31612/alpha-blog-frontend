@@ -5,7 +5,6 @@ import moment from "moment";
 import { CategoryTags } from "../Categories";
 
 const ArticlesListItem = ({ article }) => {
-  console.log("article: ", article);
   return (
     <div className="row justify-content-md-center py-3">
       <div className="col-md-8">

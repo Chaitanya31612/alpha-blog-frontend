@@ -309,9 +309,10 @@ body {
   }
 
   &__entry {
-    width: 30rem;
+    width: max-content;
+    min-width: 20rem;
     margin: auto;
-    padding: 1rem 0;
+    padding: 1rem;
     color: #242424;
     //border-bottom: 1px solid #ccc;
 

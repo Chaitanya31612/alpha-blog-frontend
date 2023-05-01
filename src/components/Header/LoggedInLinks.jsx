@@ -8,7 +8,6 @@ const LoggedInLinks = ({ currentUser }) => {
 
   const handleLogout = () => {
     removeCookie("authToken");
-    localStorage.removeItem("authToken");
     window.location.href = "/";
   };
 
