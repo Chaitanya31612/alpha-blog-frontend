@@ -8,7 +8,12 @@ import PrivateRoutes from "./routes/PrivateRoutes";
 
 import { Landing, Login, SignUp } from "./pages";
 import { UserPage, UsersPage } from "./pages/Users";
-import { ArticlePage, ArticlesPage, NewArticlePage } from "./pages/Articles";
+import {
+  ArticlePage,
+  ArticlesPage,
+  EditArticlePage,
+  NewArticlePage,
+} from "./pages/Articles";
 import { CategoriesPage, CategoryPage } from "./pages/Categories";
 
 const App = () => {
@@ -52,6 +57,7 @@ const App = () => {
           {/* ================== ARTICLES ================== */}
           <Route path="/articles" element={<ArticlesPage />} />
           <Route path="/articles/:id" element={<ArticlePage />} />
+          <Route path="/articles/:id/edit" element={<EditArticlePage />} />
           <Route path="/articles/new" element={<NewArticlePage />} />
 
           {/* ================== CATEGORIES ================ */}

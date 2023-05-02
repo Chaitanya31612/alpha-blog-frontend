@@ -62,3 +62,25 @@ export const createArticle = async ({
     throw Error(err.message);
   }
 };
+
+export const updateArticle = async ({
+  id,
+  title = "",
+  description = "",
+  category_ids = [],
+}) => {
+  try {
+    if (axios.defaults.headers.common["Authorization"]) {
+      const response = await axios.put(`${baseURL}/articles/${id}`, {
+        title,
+        description,
+        category_ids,
+      });
+      return response.data;
+    } else {
+      throw Error("Unauthorized");
+    }
+  } catch (err) {
+    throw Error(err.message);
+  }
+};
