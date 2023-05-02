@@ -4,6 +4,7 @@ import { useAuth } from "../../contexts/AuthContext";
 import { Formik, Form, Field, ErrorMessage } from "formik";
 import { useCookies } from "react-cookie";
 import { loginUser } from "../../apis";
+import moment from "moment";
 
 const LoginForm = () => {
   const navigate = useNavigate();
@@ -30,7 +31,8 @@ const LoginForm = () => {
         // setCurrentUser(user);
         setCookie("authToken", token, {
           path: "/",
-          maxAge: 10000,
+          maxAge: moment().add(1, "day").toDate(),
+          secure: true,
           sameSite: "lax",
         });
         navigate("/articles", { replace: true });

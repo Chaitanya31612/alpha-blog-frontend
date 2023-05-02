@@ -24,6 +24,8 @@ const ArticlePage = () => {
 
   if (isLoading) return <div>Loading...</div>;
 
+  if (isError) return <div>Error: {error.message}</div>;
+
   return (
     <div className="section-profile">
       <div style={{ flexGrow: 5, order: -1 }}>
