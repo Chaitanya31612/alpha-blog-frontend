@@ -14,10 +14,25 @@ export const loadArticles = async () => {
   }
 };
 
-export const getFeaturedArticles = async () => {
+export const getFeaturedArticles = async ({ limit }) => {
   try {
     if (axios.defaults.headers.common["Authorization"]) {
-      const response = await axios.get(`${baseURL}/articles/featured`);
+      const response = await axios.get(
+        `${baseURL}/articles/featured?limit=${limit}`
+      );
+      return response.data;
+    } else {
+      throw Error("Unauthorized");
+    }
+  } catch (err) {
+    throw Error(err.message);
+  }
+};
+
+export const getArticle = async (id) => {
+  try {
+    if (axios.defaults.headers.common["Authorization"]) {
+      const response = await axios.get(`${baseURL}/articles/${id}`);
       return response.data;
     } else {
       throw Error("Unauthorized");

@@ -1,6 +1,8 @@
+import { useQuery } from "@tanstack/react-query";
 import moment from "moment";
 import Gravatar from "react-gravatar";
 import { Link } from "react-router-dom";
+import { getUser } from "../../apis";
 
 const ProfileHeader = ({
   user,
@@ -135,7 +137,26 @@ const FollowersSection = ({ followers }) => {
   );
 };
 
-const UserProfile = ({ user, followings, followers, articlesCount }) => {
+const UserProfile = ({ userId }) => {
+  const {
+    isError,
+    isLoading,
+    error,
+    data: user,
+  } = useQuery(["user", userId], () => getUser(userId), {
+    onError: (error) => {
+      console.log("Error: ", error);
+    },
+    onSuccess: (data) => {
+      console.log("userprofile: ", data);
+    },
+  });
+  const { followers, followings, articles } = user || {};
+
+  if (isLoading) {
+    return <div>Loading...</div>;
+  }
+
   return (
     <div className="sticky-top" style={{ zIndex: 100 }}>
       {/* Profile Header */}
@@ -143,7 +164,7 @@ const UserProfile = ({ user, followings, followers, articlesCount }) => {
         user={user}
         followersCount={followers?.length}
         followingsCount={followings?.length}
-        articlesCount={articlesCount}
+        articlesCount={articles.length}
       />
 
       {/* Followings */}

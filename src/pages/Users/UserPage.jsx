@@ -9,20 +9,19 @@ import { UserProfile, UserResultList } from "../../components/Users";
 const UserPage = () => {
   const params = useParams();
 
-  const { isError, isLoading, error, data } = useQuery(
-    ["user", params.id],
-    () => getUser(params.id),
-    {
-      onError: (error) => {
-        console.log("Error: ", error);
-      },
-      onSuccess: (data) => {
-        // console.log("Success: ", data);
-      },
-    }
-  );
-
-  const { user, articles, followings, followers } = data || {};
+  const {
+    isError,
+    isLoading,
+    error,
+    data: user,
+  } = useQuery(["user", params.id], () => getUser(params.id), {
+    onError: (error) => {
+      console.log("Error: ", error);
+    },
+    onSuccess: (data) => {
+      console.log("user: ", data);
+    },
+  });
 
   const [activeTab, setActiveTab] = useState(0);
 
@@ -60,20 +59,20 @@ const UserPage = () => {
           {isLoading ? (
             <div>Loading...</div>
           ) : activeTab === 0 ? (
-            articles && articles.length > 0 ? (
-              <ArticlesList articles={articles} />
+            user.articles && user.articles.length > 0 ? (
+              <ArticlesList articles={user.articles} />
             ) : (
               <p className="text-center">No Articles</p>
             )
           ) : activeTab === 1 ? (
-            followings && followings.length > 0 ? (
-              <UserResultList users={followings} />
+            user.followings && user.followings.length > 0 ? (
+              <UserResultList users={user.followings} />
             ) : (
               <p className="text-center">No Followings</p>
             )
           ) : activeTab === 2 ? (
-            followers && followers.length > 0 ? (
-              <UserResultList users={followers} />
+            user.followers && user.followers.length > 0 ? (
+              <UserResultList users={user.followers} />
             ) : (
               <p className="text-center">No Followers</p>
             )
@@ -87,12 +86,7 @@ const UserPage = () => {
           className="d-sm-none d-lg-block"
         >
           <div className="sticky-top" style={{ zIndex: 100 }}>
-            <UserProfile
-              user={user}
-              followings={followings.slice(0, 5)}
-              followers={followers.slice(0, 5)}
-              articlesCount={articles?.length}
-            />
+            <UserProfile userId={user.id} />
           </div>
         </div>
       </div>

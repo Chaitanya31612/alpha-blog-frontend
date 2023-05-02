@@ -1,7 +1,19 @@
+import { useQuery } from "@tanstack/react-query";
 import Gravatar from "react-gravatar";
 import { Link } from "react-router-dom";
+import { getFeaturedArticles } from "../../apis";
 
-const TopFeaturedArticles = ({ isLoading, featuredArticles }) => {
+const TopFeaturedArticles = () => {
+  const { isLoading, data: featuredArticles } = useQuery(
+    ["topfeaturedArticles"],
+    () => getFeaturedArticles({ limit: 3 }),
+    {
+      onSuccess: (data) => {
+        console.log("featured: ", data);
+      },
+    }
+  );
+
   return (
     <div className="py-5 pb-3 border-bottom">
       <p className="text-black fw-bold">

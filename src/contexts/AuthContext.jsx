@@ -11,7 +11,7 @@ export function useAuth() {
 export function AuthProvider({ children }) {
   const [currentUser, setCurrentUser] = useState();
   const [loggedIn, setLoggedIn] = useState(false);
-  const [token, setToken] = useState();
+  const [token, setToken] = useState(); // TODO CSRF token
   const [loading, setLoading] = useState(false);
 
   const value = {

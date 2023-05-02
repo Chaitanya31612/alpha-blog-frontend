@@ -8,7 +8,7 @@ import PrivateRoutes from "./routes/PrivateRoutes";
 
 import { Landing, Login, SignUp } from "./pages";
 import { UserPage, UsersPage } from "./pages/Users";
-import { ArticlePage } from "./pages/Articles";
+import { ArticlePage, ArticlesPage } from "./pages/Articles";
 import { CategoriesPage, CategoryPage } from "./pages/Categories";
 
 const App = () => {
@@ -21,6 +21,7 @@ const App = () => {
     if (authToken) {
       setAuthToken(authToken);
       setLoggedIn(true);
+      // TODO set csrf token
 
       const getUser = async () => {
         try {
@@ -49,7 +50,8 @@ const App = () => {
           <Route path="/users/:id" element={<UserPage />} />
 
           {/* ================== ARTICLES ================== */}
-          <Route path="/articles" element={<ArticlePage />} />
+          <Route path="/articles" element={<ArticlesPage />} />
+          <Route path="/articles/:id" element={<ArticlePage />} />
 
           {/* ================== CATEGORIES ================ */}
           <Route path="/categories" element={<CategoriesPage />} />

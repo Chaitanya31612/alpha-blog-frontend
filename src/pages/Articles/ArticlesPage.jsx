@@ -44,8 +44,11 @@ const ArticlesPage = () => {
       onSuccess: (data) => {
         console.log("featured: ", data);
       },
+      enabled: activeTab === 1,
     }
   );
+
+  console.log("activeTab: ", activeTab);
 
   return (
     <div className="section-profile">
@@ -59,23 +62,23 @@ const ArticlesPage = () => {
             />
           </div>
 
-          {isLoading ? (
-            <div>Loading...</div>
-          ) : activeTab === 0 ? (
-            articles && articles.length > 0 ? (
+          {activeTab === 0 &&
+            (isLoading ? (
+              <div>Loading...</div>
+            ) : articles && articles.length > 0 ? (
               <ArticlesList articles={articles} />
             ) : (
               <p className="text-center">No Articles</p>
-            )
-          ) : activeTab === 1 ? (
-            articles && articles.length > 0 ? (
+            ))}
+
+          {activeTab === 1 &&
+            (featuredLoading ? (
+              <div>Loading...</div>
+            ) : articles && articles.length > 0 ? (
               <ArticlesList articles={featuredArticles} />
             ) : (
               <p className="text-center">No Articles</p>
-            )
-          ) : (
-            <p>No results</p>
-          )}
+            ))}
         </div>
       </div>
 
@@ -85,10 +88,7 @@ const ArticlesPage = () => {
         className="d-sm-none d-lg-block"
       >
         <div className="sticky-top" style={{ zIndex: 100 }}>
-          <TopFeaturedArticles
-            isLoading={featuredLoading}
-            featuredArticles={featuredArticles}
-          />
+          <TopFeaturedArticles />
 
           <TopCategories />
 
