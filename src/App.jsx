@@ -7,7 +7,7 @@ import { useAuth } from "./contexts/AuthContext";
 import PrivateRoutes from "./routes/PrivateRoutes";
 
 import { Landing, Login, SignUp } from "./pages";
-import { UserPage, UsersPage } from "./pages/Users";
+import { EditUserPage, UserPage, UsersPage } from "./pages/Users";
 import {
   ArticlePage,
   ArticlesPage,
@@ -53,6 +53,7 @@ const App = () => {
           {/* ================= USERS ===================== */}
           <Route path="/users" element={<UsersPage />} />
           <Route path="/users/:id" element={<UserPage />} />
+          <Route path="/users/:id/edit" element={<EditUserPage />} />
 
           {/* ================== ARTICLES ================== */}
           <Route path="/articles" element={<ArticlesPage />} />

@@ -36,3 +36,16 @@ export const loadUser = async () => {
     throw Error(err.response.data.message);
   }
 };
+
+export const updateUser = async ({ id, username, email, password }) => {
+  try {
+    const response = await axios.put(`${baseURL}/users/${id}`, {
+      username,
+      email,
+      password,
+    });
+    return response.data;
+  } catch (err) {
+    throw Error(err.response.data.message);
+  }
+};
