@@ -1,11 +1,34 @@
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 import moment from "moment";
 import Gravatar from "react-gravatar";
-import { Link } from "react-router-dom";
+import { Link, useNavigate, useParams } from "react-router-dom";
+import { deleteArticle } from "../../apis";
 import { useAuth } from "../../contexts/AuthContext";
 import { CategoryTags } from "../Categories";
 
 const ArticleDetails = ({ article }) => {
+  const params = useParams();
   const { currentUser } = useAuth();
+  const queryClient = useQueryClient();
+  const navigate = useNavigate();
+
+  const deleteArticleMutation = useMutation(["deleteArticle"], deleteArticle, {
+    onSuccess: () => {
+      queryClient.invalidateQueries({
+        queryKey: ["article", params.id],
+      });
+    },
+  });
+
+  const handleDelete = async (e) => {
+    e.preventDefault();
+
+    if (window.confirm("Are you sure you want to delete this article?")) {
+      deleteArticleMutation.mutate(params.id);
+      navigate("/articles");
+    }
+  };
+
   return (
     <div className="container py-4">
       {article.categories && article.categories.length > 0 && (
@@ -64,14 +87,12 @@ const ArticleDetails = ({ article }) => {
               >
                 Edit
               </Link>
-              <Link
-                to={`/articles/${article.id}`}
+              <button
                 className="btn btn-outline-danger ms-2"
-                data-method="delete"
-                data-confirm="Are you sure?"
+                onClick={handleDelete}
               >
                 Delete
-              </Link>
+              </button>
             </div>
           )}
         </div>

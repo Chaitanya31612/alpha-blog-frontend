@@ -2,9 +2,61 @@ import Gravatar from "react-gravatar";
 import { Link } from "react-router-dom";
 import { useAuth } from "../../contexts/AuthContext";
 import moment from "moment";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { followUser, unfollowUser } from "../../apis";
 
 const UsersListItem = ({ user }) => {
-  const { currentUser } = useAuth();
+  const { currentUser, setCurrentUser } = useAuth();
+  const queryClient = useQueryClient();
+  console.log("currentUser: ", currentUser);
+
+  const followUserMutation = useMutation(
+    ["followUser"],
+    () => followUser(user.id),
+    {
+      onSuccess: (data) => {
+        console.log("follow user: ", data);
+        const { followings } = data;
+        setCurrentUser({
+          ...currentUser,
+          followings,
+        });
+        queryClient.invalidateQueries({ queryKey: ["users"] });
+      },
+    }
+  );
+
+  const unfollowUserMutation = useMutation(
+    ["unfollowUser"],
+    () => unfollowUser(user.id),
+    {
+      onSuccess: (data) => {
+        console.log("unfollow user: ", data);
+        const { followings } = data;
+        setCurrentUser({
+          ...currentUser,
+          followings,
+        });
+        queryClient.invalidateQueries({ queryKey: ["users"] });
+      },
+    }
+  );
+
+  const checkFollowingStatus = (from, to) => {
+    return (
+      from.followings?.filter((following) => following.id === to.id).length > 0
+    );
+  };
+
+  const handleFollow = (userId, action) => {
+    if (action === "follow") {
+      console.log("follow", userId);
+      followUserMutation.mutate(userId);
+    } else {
+      console.log("unfollow", userId);
+      unfollowUserMutation.mutate(userId);
+    }
+  };
 
   return (
     <div className="col-sm-6 col-xl-4">
@@ -33,6 +85,31 @@ const UsersListItem = ({ user }) => {
                 {user.username}
               </Link>
 
+              {currentUser && currentUser.id !== user.id && (
+                <>
+                  {checkFollowingStatus(currentUser, user) ? (
+                    <span
+                      className="d-block badge bg-success ms-1"
+                      style={{
+                        cursor: "pointer",
+                      }}
+                      onClick={() => handleFollow(user.id, "unfollow")}
+                    >
+                      Following
+                    </span>
+                  ) : (
+                    <span
+                      className="d-block badge bg-primary ms-1"
+                      style={{
+                        cursor: "pointer",
+                      }}
+                      onClick={() => handleFollow(user.id, "follow")}
+                    >
+                      Follow
+                    </span>
+                  )}
+                </>
+              )}
               {/* {user.id !== currentUser.id && (
               {currentUser.followings.includes()}
             )} */}

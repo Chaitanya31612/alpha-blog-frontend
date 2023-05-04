@@ -164,16 +164,16 @@ const SignUpForm = ({ userDetails }) => {
               />
             </div>
             <div className="form-group row">
-              <div className="form-group row">
-                <button
-                  type="submit"
-                  className="btn btn-primary mt-4"
-                  style={{ width: "100%" }}
-                  disabled={isSubmitting}
-                >
-                  {params.id ? "Update Profile" : "Sign Up"}
-                </button>
-              </div>
+              <button
+                type="submit"
+                className="btn btn-primary mt-4"
+                style={{ width: "100%" }}
+                disabled={isSubmitting}
+              >
+                {params.id ? "Update Profile" : "Sign Up"}
+              </button>
+            </div>
+            <div className="form-group row">
               {!params.id && (
                 <div className="form-group row mt-3">
                   <small className="text-muted ps-0">

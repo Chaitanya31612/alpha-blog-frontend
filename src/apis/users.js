@@ -39,3 +39,29 @@ export const getUser = async (id) => {
     throw Error(err.message);
   }
 };
+
+export const followUser = async (id) => {
+  try {
+    if (axios.defaults.headers.common["Authorization"]) {
+      const response = await axios.post(`${baseURL}/follow/${id}`);
+      return response.data;
+    } else {
+      throw Error("Unauthorized");
+    }
+  } catch (err) {
+    throw Error(err.message);
+  }
+};
+
+export const unfollowUser = async (id) => {
+  try {
+    if (axios.defaults.headers.common["Authorization"]) {
+      const response = await axios.post(`${baseURL}/unfollow/${id}`);
+      return response.data;
+    } else {
+      throw Error("Unauthorized");
+    }
+  } catch (err) {
+    throw Error(err.message);
+  }
+};

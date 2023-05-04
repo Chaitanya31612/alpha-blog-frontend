@@ -84,3 +84,16 @@ export const updateArticle = async ({
     throw Error(err.message);
   }
 };
+
+export const deleteArticle = async (id) => {
+  try {
+    if (axios.defaults.headers.common["Authorization"]) {
+      const response = await axios.delete(`${baseURL}/articles/${id}`);
+      return response.data;
+    } else {
+      throw Error("Unauthorized");
+    }
+  } catch (err) {
+    throw Error(err.message);
+  }
+};

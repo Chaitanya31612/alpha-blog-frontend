@@ -1,12 +1,13 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { ErrorMessage, Field, Form, Formik } from "formik";
 import { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { createArticle, loadCategoriesList, updateArticle } from "../../apis";
 import { useAuth } from "../../contexts/AuthContext";
 import { MultiSelect } from "../Common";
 
 const ArticleForm = ({ articleDetails }) => {
+  const params = useParams();
   const navigate = useNavigate();
   const queryClient = useQueryClient();
   const [options, setOptions] = useState([]);
@@ -29,14 +30,17 @@ const ArticleForm = ({ articleDetails }) => {
   });
 
   const createArticleMutation = useMutation(["createArticle"], createArticle, {
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["articles"] });
+    onSuccess: (data) => {
+      console.log("data: ", data);
+      // queryClient.invalidateQueries({ queryKey: ["article", data] });
     },
   });
 
   const updateArticleMutation = useMutation(["updateArticle"], updateArticle, {
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["articles"] });
+      queryClient.invalidateQueries({
+        queryKey: ["edit", "article", params.id],
+      });
     },
   });
 
@@ -55,8 +59,8 @@ const ArticleForm = ({ articleDetails }) => {
         console.log("values: ", values);
         const { title, description, categories, featured } = values;
 
-        if (articleDetails) {
-          const { message, article } = await createArticleMutation.mutateAsync({
+        if (params.id) {
+          const { message, article } = await updateArticleMutation.mutateAsync({
             id: articleDetails.id,
             title,
             description,
@@ -65,7 +69,7 @@ const ArticleForm = ({ articleDetails }) => {
           });
           navigate(`/articles/${article.id}`);
         } else {
-          const { message, article } = await updateArticleMutation.mutateAsync({
+          const { message, article } = await createArticleMutation.mutateAsync({
             title,
             description,
             category_ids: categories,
@@ -77,7 +81,7 @@ const ArticleForm = ({ articleDetails }) => {
     >
       {({ isSubmitting, setFieldValue }) => {
         useEffect(() => {
-          if (articleDetails) {
+          if (params.id && articleDetails) {
             console.log("articleDetails: ", articleDetails);
             const fields = ["title", "description", "featured"];
             fields.forEach((field) => {
@@ -89,6 +93,7 @@ const ArticleForm = ({ articleDetails }) => {
             );
           }
         }, []);
+
         return (
           <Form className="px-3">
             <div className="form-group row mb-3">

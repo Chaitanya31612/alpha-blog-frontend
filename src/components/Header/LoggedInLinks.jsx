@@ -4,7 +4,7 @@ import { Link } from "react-router-dom";
 import { WriteIcon, AdminIcon } from "../../assets/images";
 
 const LoggedInLinks = ({ currentUser }) => {
-  const [, , removeCookie] = useCookies(["authToken"]);
+  const [cookies, , removeCookie] = useCookies(["authToken"]);
 
   const handleLogout = () => {
     removeCookie("authToken");

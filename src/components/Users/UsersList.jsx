@@ -1,21 +1,25 @@
 import { useQuery } from "@tanstack/react-query";
+import { useState } from "react";
 import { loadUsersList } from "../../apis/users";
 import UsersListItem from "./UsersListItem";
 
 const UsersList = () => {
-  const {
-    isError,
-    isLoading,
-    error,
-    data: users,
-  } = useQuery(["users"], loadUsersList, {
-    onError: (error) => {
-      console.log("Error: ", error);
-    },
-    onSuccess: (data) => {
-      console.log("Success: ", data);
-    },
-  });
+  const [users, setUsers] = useState([]);
+  const { isError, isLoading, error, data } = useQuery(
+    ["users"],
+    loadUsersList,
+    {
+      onError: (error) => {
+        console.log("Error: ", error);
+      },
+      onSuccess: (data) => {
+        console.log("Success: ", data);
+        setUsers(data);
+      },
+    }
+  );
+
+  if (isLoading) return <div>Loading...</div>;
 
   return (
     <div className="container">
