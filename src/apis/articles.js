@@ -97,3 +97,16 @@ export const deleteArticle = async (id) => {
     throw Error(err.message);
   }
 };
+
+export const clapArticle = async (id) => {
+  try {
+    if (axios.defaults.headers.common["Authorization"]) {
+      const response = await axios.post(`${baseURL}/article/${id}/upvote`);
+      return response.data;
+    } else {
+      throw Error("Unauthorized");
+    }
+  } catch (err) {
+    throw Error(err.message);
+  }
+};

@@ -23,7 +23,7 @@ const TopCategories = () => {
             to="/categories"
             className="text-success text-decoration-none badge"
           >
-            See all({topCategories?.length})
+            See all
           </Link>
         </small>
       </p>

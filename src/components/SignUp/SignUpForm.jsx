@@ -1,5 +1,5 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { Link, useNavigate, useParams } from "react-router-dom";
+import { Link, Navigate, useNavigate, useParams } from "react-router-dom";
 import { useAuth } from "../../contexts/AuthContext";
 import { Formik, Form, Field, ErrorMessage } from "formik";
 import { useCookies } from "react-cookie";

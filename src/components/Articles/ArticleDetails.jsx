@@ -2,7 +2,7 @@ import { useMutation, useQueryClient } from "@tanstack/react-query";
 import moment from "moment";
 import Gravatar from "react-gravatar";
 import { Link, useNavigate, useParams } from "react-router-dom";
-import { deleteArticle } from "../../apis";
+import { clapArticle, deleteArticle } from "../../apis";
 import { useAuth } from "../../contexts/AuthContext";
 import { CategoryTags } from "../Categories";
 
@@ -20,6 +20,15 @@ const ArticleDetails = ({ article }) => {
     },
   });
 
+  const clapArticleMutation = useMutation(["clapArticle"], clapArticle, {
+    onSuccess: (data) => {
+      console.log("clapArticleMutatio", data);
+      queryClient.invalidateQueries({
+        queryKey: ["article", params.id],
+      });
+    },
+  });
+
   const handleDelete = async (e) => {
     e.preventDefault();
 
@@ -27,6 +36,10 @@ const ArticleDetails = ({ article }) => {
       deleteArticleMutation.mutate(params.id);
       navigate("/articles");
     }
+  };
+
+  const handleClaps = async () => {
+    clapArticleMutation.mutate(params.id);
   };
 
   return (
@@ -73,7 +86,11 @@ const ArticleDetails = ({ article }) => {
                 &#128079; {article.upvotes} Clap{article.upvotes != 1 && "s"}
               </span>
             ) : (
-              <span className="text-warning user-select-none">
+              <span
+                className="text-warning user-select-none"
+                style={{ cursor: "pointer" }}
+                onClick={handleClaps}
+              >
                 &#128079; {article.upvotes} Clap{article.upvotes != 1 && "s"}
               </span>
             )}

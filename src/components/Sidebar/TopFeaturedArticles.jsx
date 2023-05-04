@@ -3,7 +3,7 @@ import Gravatar from "react-gravatar";
 import { Link } from "react-router-dom";
 import { getFeaturedArticles } from "../../apis";
 
-const TopFeaturedArticles = () => {
+const TopFeaturedArticles = ({ setActiveTab }) => {
   const { isLoading, data: featuredArticles } = useQuery(
     ["topfeaturedArticles"],
     () => getFeaturedArticles({ limit: 3 }),
@@ -19,12 +19,13 @@ const TopFeaturedArticles = () => {
       <p className="text-black fw-bold">
         Featured Articles
         <small>
-          <Link
-            to="/articles/featured"
+          <span
+            style={{ cursor: "pointer" }}
+            onClick={() => setActiveTab(1)}
             className="text-success text-decoration-none badge"
           >
-            See all({featuredArticles?.length})
-          </Link>
+            See all
+          </span>
         </small>
       </p>
       {isLoading ? (

@@ -25,13 +25,13 @@ const App = () => {
     const { authToken } = cookies;
     if (authToken) {
       setAuthToken(authToken);
-      setLoggedIn(true);
       // TODO set csrf token
 
       const getUser = async () => {
         try {
           const { user } = await loadUser();
           setCurrentUser(user);
+          setLoggedIn(true);
         } catch (error) {
           console.log("error: ", error);
         }
@@ -64,6 +64,12 @@ const App = () => {
           {/* ================== CATEGORIES ================ */}
           <Route path="/categories" element={<CategoriesPage />} />
           <Route path="/categories/:id" element={<CategoryPage />} />
+
+          {/* ================== Not Found ================== */}
+          <Route
+            path="*"
+            element={<h1 className="text-center">404 Not Found</h1>}
+          />
         </Route>
       </Routes>
     </>

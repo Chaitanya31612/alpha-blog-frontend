@@ -1,10 +1,16 @@
+import { useState } from "react";
+import { useEffect } from "react";
+import { Navigate, useParams } from "react-router-dom";
 import SignUpForm from "../../components/SignUp/SignUpForm";
 import { useAuth } from "../../contexts/AuthContext";
 
 const EditUserPage = () => {
   const { currentUser } = useAuth();
+  const params = useParams();
 
-  console.log("edit user page: ", currentUser);
+  if (currentUser && currentUser.id !== Number(params.id)) {
+    return <Navigate to={`/users/${params.id}`} />;
+  }
 
   return (
     <div

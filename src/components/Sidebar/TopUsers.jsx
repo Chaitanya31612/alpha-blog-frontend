@@ -20,7 +20,7 @@ const TopUsers = () => {
             to="/categories"
             className="text-success text-decoration-none badge"
           >
-            See all({topUsers?.length})
+            See all
           </Link>
         </small>
       </p>

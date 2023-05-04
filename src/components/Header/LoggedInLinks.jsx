@@ -7,6 +7,7 @@ const LoggedInLinks = ({ currentUser }) => {
   const [cookies, , removeCookie] = useCookies(["authToken"]);
 
   const handleLogout = () => {
+    console.log("c", cookies);
     removeCookie("authToken");
     window.location.href = "/";
   };

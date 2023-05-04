@@ -88,7 +88,7 @@ const ArticlesPage = () => {
         className="d-sm-none d-lg-block"
       >
         <div className="sticky-top" style={{ zIndex: 100 }}>
-          <TopFeaturedArticles />
+          <TopFeaturedArticles setActiveTab={setActiveTab} />
 
           <TopCategories />
 
