@@ -8,6 +8,14 @@ export const setAuthToken = (token) => {
   }
 };
 
+export const setCSRFToken = (csrfToken) => {
+  if (csrfToken) {
+    axios.defaults.headers.common["X-CSRF-Token"] = csrfToken;
+  } else {
+    delete axios.defaults.headers.common["X-CSRF-Token"];
+  }
+};
+
 export const baseURL = import.meta.env.VITE_BASE_URL;
 
 export * from "./articles";

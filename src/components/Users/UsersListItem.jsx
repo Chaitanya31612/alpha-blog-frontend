@@ -8,7 +8,6 @@ import { followUser, unfollowUser } from "../../apis";
 const UsersListItem = ({ user }) => {
   const { currentUser, setCurrentUser } = useAuth();
   const queryClient = useQueryClient();
-  console.log("currentUser: ", currentUser);
 
   const followUserMutation = useMutation(
     ["followUser"],

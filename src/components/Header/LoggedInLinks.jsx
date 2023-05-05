@@ -7,7 +7,6 @@ const LoggedInLinks = ({ currentUser }) => {
   const [cookies, , removeCookie] = useCookies(["authToken"]);
 
   const handleLogout = () => {
-    console.log("c", cookies);
     removeCookie("authToken");
     window.location.href = "/";
   };
@@ -58,11 +57,11 @@ const LoggedInLinks = ({ currentUser }) => {
           </Link>
         </li>
       )}
-      <li className="nav-item">
+      {/* <li className="nav-item">
         <Link to="/community" className="nav-link">
           Community
         </Link>
-      </li>
+      </li> */}
 
       <li className="nav-item dropdown" style={{ zIndex: 9999 }}>
         <a

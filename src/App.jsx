@@ -1,7 +1,7 @@
 import { useEffect } from "react";
 import { useCookies } from "react-cookie";
 import { Route, Routes, useNavigate } from "react-router-dom";
-import { loadUser, setAuthToken } from "./apis";
+import { loadUser, setAuthToken, setCSRFToken } from "./apis";
 import Header from "./components/Header";
 import { useAuth } from "./contexts/AuthContext";
 import PrivateRoutes from "./routes/PrivateRoutes";
@@ -29,9 +29,10 @@ const App = () => {
 
       const getUser = async () => {
         try {
-          const { user } = await loadUser();
+          const { user, csrf_token } = await loadUser();
           setCurrentUser(user);
           setLoggedIn(true);
+          setCSRFToken(csrf_token);
         } catch (error) {
           console.log("error: ", error);
         }
