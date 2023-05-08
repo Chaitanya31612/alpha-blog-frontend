@@ -2,6 +2,7 @@ import { useMutation, useQueryClient } from "@tanstack/react-query";
 import moment from "moment";
 import Gravatar from "react-gravatar";
 import { Link, useNavigate, useParams } from "react-router-dom";
+import Swal from "sweetalert2";
 import { clapArticle, deleteArticle } from "../../apis";
 import { useAuth } from "../../contexts/AuthContext";
 import { CategoryTags } from "../Categories";
@@ -32,10 +33,21 @@ const ArticleDetails = ({ article }) => {
   const handleDelete = async (e) => {
     e.preventDefault();
 
-    if (window.confirm("Are you sure you want to delete this article?")) {
-      deleteArticleMutation.mutate(params.id);
-      navigate("/articles");
-    }
+    Swal.fire({
+      title: "Are you sure?",
+      text: "You won't be able to revert this!",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "Yes, delete article!",
+    }).then((result) => {
+      if (result.isConfirmed) {
+        deleteArticleMutation.mutate(params.id);
+        Swal.fire("Deleted!", "Your article has been deleted.", "success");
+        navigate("/articles");
+      }
+    });
   };
 
   const handleClaps = async () => {

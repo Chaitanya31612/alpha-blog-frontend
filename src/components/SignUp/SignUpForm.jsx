@@ -3,16 +3,17 @@ import { Link, Navigate, useNavigate, useParams } from "react-router-dom";
 import { useAuth } from "../../contexts/AuthContext";
 import { Formik, Form, Field, ErrorMessage } from "formik";
 import { useCookies } from "react-cookie";
-import { loadUser, signUpUser, updateUser } from "../../apis";
+import { deleteUser, loadUser, signUpUser, updateUser } from "../../apis";
 import moment from "moment";
 import { useEffect } from "react";
+import Swal from "sweetalert2";
 
 const SignUpForm = ({ userDetails }) => {
   const params = useParams();
   const queryClient = useQueryClient();
   const navigate = useNavigate();
   const { currentUser, loggedIn, setLoggedIn, setCurrentUser } = useAuth();
-  const [, setCookie] = useCookies(["authToken"]);
+  // const [, setCookie, removeCookie] = useCookies(["authToken"]);
 
   const createUserMutation = useMutation(["signup"], signUpUser, {
     onSuccess: (data) => {
@@ -28,6 +29,21 @@ const SignUpForm = ({ userDetails }) => {
       queryClient.invalidateQueries({ queryKey: ["user", params.id] });
     },
   });
+
+  const deleteUserMutation = useMutation(
+    ["deleteUser"],
+    () => deleteUser(params.id),
+    {
+      onSuccess: () => {
+        // removeCookie("authToken");
+        localStorage.removeItem("authToken");
+        setLoggedIn(false);
+        setCurrentUser(null);
+        queryClient.invalidateQueries();
+        navigate("/");
+      },
+    }
+  );
 
   return (
     <Formik
@@ -78,19 +94,22 @@ const SignUpForm = ({ userDetails }) => {
             password,
           });
 
-          console.log("res is: ", token, user);
-          setLoggedIn(true);
-          setCookie("authToken", token, {
-            path: "/",
-            maxAge: moment().add(1, "day").toDate(),
-            secure: true,
-            sameSite: "lax",
-          });
-          navigate(`/users/${user.id}`);
+          if (token && token !== "undefined") {
+            console.log("res is: ", token, user);
+            setLoggedIn(true);
+            // setCookie("authToken", token, {
+            //   path: "/",
+            //   maxAge: moment().add(1, "day").toDate(),
+            //   secure: true,
+            //   sameSite: "lax",
+            // });
+            localStorage.setItem("authToken", token);
+            navigate(`/users/${user.id}`);
+          }
         }
       }}
     >
-      {({ isSubmitting, setFieldValue }) => {
+      {({ isSubmitting, setFieldValue, values }) => {
         useEffect(() => {
           if (userDetails) {
             console.log("userDetails: ", userDetails);
@@ -98,6 +117,39 @@ const SignUpForm = ({ userDetails }) => {
             setFieldValue("username", userDetails.username);
           }
         }, [userDetails]);
+
+        const handleDeleteProfile = () => {
+          if (!params.id) return;
+
+          if (values.password === "") {
+            Swal.fire({
+              title: "Please enter your password!",
+              icon: "warning",
+              confirmButtonText: "OK",
+            });
+            return;
+          }
+
+          Swal.fire({
+            title: "Are you sure?",
+            text: "You will not be able to recover your account!",
+            icon: "warning",
+            showCancelButton: true,
+            confirmButtonText: "Yes, delete my account!",
+            cancelButtonText: "No, keep my account",
+          }).then((result) => {
+            if (result.isConfirmed) {
+              deleteUserMutation.mutate(params.id);
+              Swal.fire(
+                "Deleted!",
+                "Your account has been deleted successfully.",
+                "success"
+              );
+            } else if (result.dismiss === Swal.DismissReason.cancel) {
+              Swal.fire("Cancelled", "Your account is safe :)", "error");
+            }
+          });
+        };
 
         return (
           <Form className="px-5">
@@ -146,7 +198,7 @@ const SignUpForm = ({ userDetails }) => {
                 htmlFor="password"
                 className="col-form-label fw-semibold text-muted ps-0"
               >
-                Password
+                Confirm Password
               </label>
               <Field
                 type="password"
@@ -172,6 +224,16 @@ const SignUpForm = ({ userDetails }) => {
               >
                 {params.id ? "Update Profile" : "Sign Up"}
               </button>
+              {params.id && (
+                <button
+                  type="button"
+                  onClick={handleDeleteProfile}
+                  className="btn btn-outline-danger mt-4"
+                  style={{ width: "100%" }}
+                >
+                  Delete Profile
+                </button>
+              )}
             </div>
             <div className="form-group row">
               {!params.id && (

@@ -19,10 +19,12 @@ import { CategoriesPage, CategoryPage } from "./pages/Categories";
 const App = () => {
   const navigate = useNavigate();
   const { setCurrentUser, loggedIn, setLoggedIn } = useAuth();
-  const [cookies] = useCookies(["authToken"]);
+  // const [cookies] = useCookies(["authToken"]);
+  const authToken = localStorage.getItem("authToken");
 
   useEffect(() => {
-    const { authToken } = cookies;
+    // const { authToken } = cookies;
+    console.log("authToken: ", authToken);
     if (authToken) {
       setAuthToken(authToken);
       // TODO set csrf token
@@ -39,7 +41,7 @@ const App = () => {
       };
       getUser();
     }
-  }, [cookies]);
+  }, [authToken]);
 
   return (
     <>
@@ -49,7 +51,11 @@ const App = () => {
         <Route path="/signup" element={<SignUp />} />
         <Route path="/login" element={<Login />} />
         <Route
-          element={<PrivateRoutes loggedIn={loggedIn || cookies.authToken} />}
+          element={
+            <PrivateRoutes
+              loggedIn={loggedIn || localStorage.getItem("authToken")}
+            />
+          }
         >
           {/* ================= USERS ===================== */}
           <Route path="/users" element={<UsersPage />} />

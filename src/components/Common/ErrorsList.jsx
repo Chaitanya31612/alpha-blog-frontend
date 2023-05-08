@@ -1,6 +1,8 @@
 import PropTypes from "prop-types";
 
 const ErrorsList = ({ errors }) => {
+  if (!errors || !errors.length) return null;
+
   return (
     <div
       className="alert alert-danger alert-dismissible fade show my-3"

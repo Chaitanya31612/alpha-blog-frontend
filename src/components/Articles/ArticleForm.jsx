@@ -54,6 +54,22 @@ const ArticleForm = ({ articleDetails }) => {
         categories: [],
         featured: false,
       }}
+      validate={(values) => {
+        const errors = {};
+        if (!values.title) {
+          errors.title = "Required";
+        } else if (values.title.length < 6) {
+          errors.title = "Title must be at least 6 characters long";
+        }
+
+        if (!values.description) {
+          errors.description = "Required";
+        } else if (values.description.length < 10) {
+          errors.description =
+            "Description must be at least 10 characters long";
+        }
+        return errors;
+      }}
       onSubmit={async (values, { setSubmitting }) => {
         setSubmitting(false);
         console.log("values: ", values);
@@ -110,7 +126,11 @@ const ArticleForm = ({ articleDetails }) => {
                 placeholder="Enter title"
                 required
               />
-              <ErrorMessage name="title" component="div" />
+              <ErrorMessage
+                className="text-danger small fst-italic px-0"
+                name="title"
+                component="div"
+              />
             </div>
             <div className="form-group row mb-3">
               <label
@@ -127,7 +147,11 @@ const ArticleForm = ({ articleDetails }) => {
                 placeholder="Enter description"
                 required
               />
-              <ErrorMessage name="description" component="div" />
+              <ErrorMessage
+                className="text-danger small fst-italic px-0"
+                name="description"
+                component="div"
+              />
             </div>
             <div className="form-group row mb-3">
               <label
@@ -144,7 +168,11 @@ const ArticleForm = ({ articleDetails }) => {
                 isMulti={true}
                 component={MultiSelect}
               />
-              <ErrorMessage name="categories" component="div" />
+              <ErrorMessage
+                className="text-danger small fst-italic px-0"
+                name="categories"
+                component="div"
+              />
             </div>
 
             {currentUser?.admin && (
@@ -161,7 +189,11 @@ const ArticleForm = ({ articleDetails }) => {
                   Yes
                   <Field type="radio" name="featured" className="ms-3 me-1" />
                   No
-                  <ErrorMessage name="featured" component="div" />
+                  <ErrorMessage
+                    className="text-danger small fst-italic px-0"
+                    name="featured"
+                    component="div"
+                  />
                 </div>
               </div>
             )}

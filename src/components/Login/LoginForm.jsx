@@ -9,7 +9,7 @@ import moment from "moment";
 const LoginForm = () => {
   const navigate = useNavigate();
   const { currentUser, loggedIn, setLoggedIn } = useAuth();
-  const [, setCookie] = useCookies(["authToken"]);
+  // const [, setCookie] = useCookies(["authToken"]);
   const { mutateAsync } = useMutation(["login"], loginUser);
 
   return (
@@ -29,13 +29,14 @@ const LoginForm = () => {
         console.log("res is: ", token, user);
         setLoggedIn(true);
         // setCurrentUser(user);
-        setCookie("authToken", token, {
-          path: "/",
-          maxAge: moment().add(1, "day").toDate(),
-          secure: true,
-          sameSite: "lax",
-        });
-        navigate("/articles", { replace: true });
+        // setCookie("authToken", token, {
+        //   path: "/",
+        //   maxAge: moment().add(1, "day").toDate(),
+        //   secure: true,
+        //   sameSite: "lax",
+        // });
+        localStorage.setItem("authToken", token);
+        navigate(`/users/${user.id}`, { replace: true });
       }}
     >
       {({ isSubmitting }) => (

@@ -4,10 +4,11 @@ import { Link } from "react-router-dom";
 import { WriteIcon, AdminIcon } from "../../assets/images";
 
 const LoggedInLinks = ({ currentUser }) => {
-  const [cookies, , removeCookie] = useCookies(["authToken"]);
+  // const [cookies, , removeCookie] = useCookies(["authToken"]);
 
   const handleLogout = () => {
-    removeCookie("authToken");
+    // removeCookie("authToken");
+    localStorage.removeItem("authToken");
     window.location.href = "/";
   };
 

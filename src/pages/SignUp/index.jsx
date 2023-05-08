@@ -1,3 +1,4 @@
+import { useState } from "react";
 import { Navigate } from "react-router-dom";
 import SignUpForm from "../../components/SignUp/SignUpForm";
 import { useAuth } from "../../contexts/AuthContext";
