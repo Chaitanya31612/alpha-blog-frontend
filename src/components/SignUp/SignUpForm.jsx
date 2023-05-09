@@ -30,20 +30,16 @@ const SignUpForm = ({ userDetails }) => {
     },
   });
 
-  const deleteUserMutation = useMutation(
-    ["deleteUser"],
-    () => deleteUser(params.id),
-    {
-      onSuccess: () => {
-        // removeCookie("authToken");
-        localStorage.removeItem("authToken");
-        setLoggedIn(false);
-        setCurrentUser(null);
-        queryClient.invalidateQueries();
-        navigate("/");
-      },
-    }
-  );
+  const deleteUserMutation = useMutation(["deleteUser"], deleteUser, {
+    onSuccess: () => {
+      // removeCookie("authToken");
+      localStorage.removeItem("authToken");
+      setLoggedIn(false);
+      setCurrentUser(null);
+      queryClient.invalidateQueries();
+      navigate("/");
+    },
+  });
 
   return (
     <Formik
@@ -139,12 +135,10 @@ const SignUpForm = ({ userDetails }) => {
             cancelButtonText: "No, keep my account",
           }).then((result) => {
             if (result.isConfirmed) {
-              deleteUserMutation.mutate(params.id);
-              Swal.fire(
-                "Deleted!",
-                "Your account has been deleted successfully.",
-                "success"
-              );
+              deleteUserMutation.mutate({
+                id: params.id,
+                password: values.password,
+              });
             } else if (result.dismiss === Swal.DismissReason.cancel) {
               Swal.fire("Cancelled", "Your account is safe :)", "error");
             }

@@ -13,8 +13,16 @@ export const loginUser = async ({ email, password }) => {
     console.log("login err", err);
     Swal.fire({
       icon: "error",
-      title: "Oops...",
-      text: err.response.data.message,
+      text: err?.response?.data?.message || "Something went wrong!",
+      toast: true,
+      position: "top",
+      showConfirmButton: false,
+      timer: 3000,
+      timerProgressBar: true,
+      didOpen: (toast) => {
+        toast.addEventListener("mouseenter", Swal.stopTimer);
+        toast.addEventListener("mouseleave", Swal.resumeTimer);
+      },
     });
     throw Error(err.response.data.message);
   }
@@ -32,8 +40,18 @@ export const signUpUser = async ({ username, email, password }) => {
     console.log("sign up errr", err);
     Swal.fire({
       icon: "error",
-      title: "Oops...",
-      text: err.response.data.message[0],
+      text: err?.response
+        ? err.response.data.message[0]
+        : "Something went wrong!",
+      toast: true,
+      position: "top",
+      showConfirmButton: false,
+      timer: 3000,
+      timerProgressBar: true,
+      didOpen: (toast) => {
+        toast.addEventListener("mouseenter", Swal.stopTimer);
+        toast.addEventListener("mouseleave", Swal.resumeTimer);
+      },
     });
     throw Error(err.response.data.message);
   }
@@ -59,23 +77,56 @@ export const updateUser = async ({ id, username, email, password }) => {
   } catch (err) {
     Swal.fire({
       icon: "error",
-      title: "Oops...",
-      text: err.response.data.message,
+      text: err?.response ? err.response.data.message : "Something went wrong!",
+      toast: true,
+      position: "top",
+      showConfirmButton: false,
+      timer: 3000,
+      timerProgressBar: true,
+      didOpen: (toast) => {
+        toast.addEventListener("mouseenter", Swal.stopTimer);
+        toast.addEventListener("mouseleave", Swal.resumeTimer);
+      },
     });
     throw Error(err.response.data.message);
   }
 };
 
-export const deleteUser = async (id) => {
+export const deleteUser = async ({ id, password }) => {
   try {
-    const response = await axios.delete(`${baseURL}/users/${id}`);
+    const response = await axios.delete(`${baseURL}/users/${id}`, {
+      data: {
+        password,
+      },
+    });
     console.log("delete response", response);
+    Swal.fire({
+      icon: "success",
+      text: "User deleted successfully!",
+      toast: true,
+      position: "top",
+      showConfirmButton: false,
+      timer: 3000,
+      timerProgressBar: true,
+      didOpen: (toast) => {
+        toast.addEventListener("mouseenter", Swal.stopTimer);
+        toast.addEventListener("mouseleave", Swal.resumeTimer);
+      },
+    });
     return response.data;
   } catch (err) {
     Swal.fire({
       icon: "error",
-      title: "Oops...",
-      text: err.response.data.message,
+      text: err?.response ? err.response.data.message : "Something went wrong!",
+      toast: true,
+      position: "top",
+      showConfirmButton: false,
+      timer: 3000,
+      timerProgressBar: true,
+      didOpen: (toast) => {
+        toast.addEventListener("mouseenter", Swal.stopTimer);
+        toast.addEventListener("mouseleave", Swal.resumeTimer);
+      },
     });
     throw Error(err.response.data.message);
   }

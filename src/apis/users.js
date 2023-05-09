@@ -65,3 +65,18 @@ export const unfollowUser = async (id) => {
     throw Error(err.message);
   }
 };
+
+export const getSearchResults = async (query) => {
+  try {
+    if (axios.defaults.headers.common["Authorization"]) {
+      const response = await axios.get(
+        `${baseURL}/search?search_term=${query}`
+      );
+      return response.data;
+    } else {
+      throw Error("Unauthorized");
+    }
+  } catch (err) {
+    throw Error(err.message);
+  }
+};

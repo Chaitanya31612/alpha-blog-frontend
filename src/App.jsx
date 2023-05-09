@@ -6,7 +6,7 @@ import Header from "./components/Header";
 import { useAuth } from "./contexts/AuthContext";
 import PrivateRoutes from "./routes/PrivateRoutes";
 
-import { Landing, Login, SignUp } from "./pages";
+import { Landing, Login, Search, SignUp } from "./pages";
 import { EditUserPage, UserPage, UsersPage } from "./pages/Users";
 import {
   ArticlePage,
@@ -15,6 +15,7 @@ import {
   NewArticlePage,
 } from "./pages/Articles";
 import { CategoriesPage, CategoryPage } from "./pages/Categories";
+import Swal from "sweetalert2";
 
 const App = () => {
   const navigate = useNavigate();
@@ -37,6 +38,14 @@ const App = () => {
           setCSRFToken(csrf_token);
         } catch (error) {
           console.log("error: ", error);
+          Swal.fire({
+            icon: "error",
+            title: "Oops...",
+            text: "Something went wrong!",
+          });
+          localStorage.removeItem("authToken");
+          setLoggedIn(false);
+          navigate("/login");
         }
       };
       getUser();
@@ -71,6 +80,9 @@ const App = () => {
           {/* ================== CATEGORIES ================ */}
           <Route path="/categories" element={<CategoriesPage />} />
           <Route path="/categories/:id" element={<CategoryPage />} />
+
+          {/* ================== OTHERS ==================== */}
+          <Route path="/search" element={<Search />} />
 
           {/* ================== Not Found ================== */}
           <Route
