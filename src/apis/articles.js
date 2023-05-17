@@ -1,4 +1,5 @@
 import axios from "axios";
+import Swal from "sweetalert2";
 import { baseURL } from ".";
 
 export const loadArticles = async () => {
@@ -54,6 +55,19 @@ export const createArticle = async ({
         description,
         category_ids,
       });
+      Swal.fire({
+        icon: "success",
+        text: "Article created successfully!",
+        toast: true,
+        position: "top",
+        showConfirmButton: false,
+        timer: 3000,
+        timerProgressBar: true,
+        didOpen: (toast) => {
+          toast.addEventListener("mouseenter", Swal.stopTimer);
+          toast.addEventListener("mouseleave", Swal.resumeTimer);
+        },
+      });
       return response.data;
     } else {
       throw Error("Unauthorized");
@@ -76,6 +90,19 @@ export const updateArticle = async ({
         description,
         category_ids,
       });
+      Swal.fire({
+        icon: "success",
+        text: "Article updated successfully!",
+        toast: true,
+        position: "top",
+        showConfirmButton: false,
+        timer: 3000,
+        timerProgressBar: true,
+        didOpen: (toast) => {
+          toast.addEventListener("mouseenter", Swal.stopTimer);
+          toast.addEventListener("mouseleave", Swal.resumeTimer);
+        },
+      });
       return response.data;
     } else {
       throw Error("Unauthorized");
@@ -89,6 +116,19 @@ export const deleteArticle = async (id) => {
   try {
     if (axios.defaults.headers.common["Authorization"]) {
       const response = await axios.delete(`${baseURL}/articles/${id}`);
+      Swal.fire({
+        icon: "success",
+        text: "Article deleted successfully!",
+        toast: true,
+        position: "top",
+        showConfirmButton: false,
+        timer: 3000,
+        timerProgressBar: true,
+        didOpen: (toast) => {
+          toast.addEventListener("mouseenter", Swal.stopTimer);
+          toast.addEventListener("mouseleave", Swal.resumeTimer);
+        },
+      });
       return response.data;
     } else {
       throw Error("Unauthorized");

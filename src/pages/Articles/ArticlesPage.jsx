@@ -48,8 +48,6 @@ const ArticlesPage = () => {
     }
   );
 
-  console.log("activeTab: ", activeTab);
-
   return (
     <div className="section-profile">
       <div style={{ flexGrow: 3, order: -1 }}>

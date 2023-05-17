@@ -8,6 +8,19 @@ export const loginUser = async ({ email, password }) => {
       email,
       password,
     });
+    Swal.fire({
+      icon: "success",
+      text: "Login successfully!",
+      toast: true,
+      position: "top",
+      showConfirmButton: false,
+      timer: 3000,
+      timerProgressBar: true,
+      didOpen: (toast) => {
+        toast.addEventListener("mouseenter", Swal.stopTimer);
+        toast.addEventListener("mouseleave", Swal.resumeTimer);
+      },
+    });
     return response.data;
   } catch (err) {
     console.log("login err", err);
@@ -34,6 +47,19 @@ export const signUpUser = async ({ username, email, password }) => {
       username,
       email,
       password,
+    });
+    Swal.fire({
+      icon: "success",
+      text: "Profile created successfully!",
+      toast: true,
+      position: "top",
+      showConfirmButton: false,
+      timer: 3000,
+      timerProgressBar: true,
+      didOpen: (toast) => {
+        toast.addEventListener("mouseenter", Swal.stopTimer);
+        toast.addEventListener("mouseleave", Swal.resumeTimer);
+      },
     });
     return response.data;
   } catch (err) {
@@ -72,6 +98,19 @@ export const updateUser = async ({ id, username, email, password }) => {
       username,
       email,
       password,
+    });
+    Swal.fire({
+      icon: "success",
+      text: "User updated successfully!",
+      toast: true,
+      position: "top",
+      showConfirmButton: false,
+      timer: 3000,
+      timerProgressBar: true,
+      didOpen: (toast) => {
+        toast.addEventListener("mouseenter", Swal.stopTimer);
+        toast.addEventListener("mouseleave", Swal.resumeTimer);
+      },
     });
     return response.data;
   } catch (err) {

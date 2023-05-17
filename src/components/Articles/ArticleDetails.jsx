@@ -44,7 +44,7 @@ const ArticleDetails = ({ article }) => {
     }).then((result) => {
       if (result.isConfirmed) {
         deleteArticleMutation.mutate(params.id);
-        Swal.fire("Deleted!", "Your article has been deleted.", "success");
+        // Swal.fire("Deleted!", "Your article has been deleted.", "success");
         navigate("/articles");
       }
     });

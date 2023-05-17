@@ -16,10 +16,7 @@ const TopUsers = () => {
       <p className="text-black fw-bold">
         Top Users
         <small>
-          <Link
-            to="/categories"
-            className="text-success text-decoration-none badge"
-          >
+          <Link to="/users" className="text-success text-decoration-none badge">
             See all
           </Link>
         </small>
